@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" x-data="{ sidebarOpen: false }" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Warungku</title>
-  @vite('resources/css/app.css')
+  <!-- Hanya memanggil satu kali untuk asset -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <script src="//unpkg.com/alpinejs" defer></script>
-  </head>
+</head>
 <body class="bg-gray-100">
+
+  @php
+    $activeMenu = $activeMenu ?? 'dashboard';
+  @endphp
+
   <div class="flex h-screen">
     <!-- Hamburger Button (Mobile Only) -->
     <button @click="sidebarOpen = true" class="md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded shadow">
@@ -28,8 +33,12 @@
       </div>
       <nav class="mt-8">
         <!-- Menu Items -->
-        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Dashboard</a>
-        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Transaksi</a>
+        <a href="{{ route('dashboard') }}"
+           class="block py-2.5 px-4 rounded transition duration-200
+                  {{ $activeMenu == 'dashboard' ? 'bg-blue-500 text-white' : 'hover:bg-blue-100 hover:text-blue-600' }}">
+          Dashboard
+        </a>
+        <a href="{{ url('/transaksi') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Transaksi</a>
         <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Produk</a>
         <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Laporan</a>
         <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Pengaturan</a>
