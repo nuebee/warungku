@@ -1,32 +1,36 @@
 <!DOCTYPE html>
-<html lang="id" x-data="{ sidebarOpen: false }" class="h-full">
+<html lang="id" x-data="{ sidebarOpen: window.innerWidth >= 768 }" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Warungku</title>
-  <!-- Hanya memanggil satu kali untuk asset -->
+  <!-- Memanggil asset CSS dan JS -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <script src="//unpkg.com/alpinejs" defer></script>
+  <style>
+    /* Pastikan elemen yang memakai x-cloak tidak terlihat sebelum Alpine.js siap */
+    [x-cloak] { display: none; }
+  </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 h-full">
 
   @php
     $activeMenu = $activeMenu ?? 'dashboard';
   @endphp
 
   <div class="flex h-screen">
-    <!-- Hamburger Button (Mobile Only) -->
-    <button @click="sidebarOpen = true" class="md:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded shadow">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-      </svg>
-    </button>
-
     <!-- Sidebar -->
     <aside 
-      :class="{'-translate-x-full': !sidebarOpen, 'translate-x-0': sidebarOpen}"
-      class="fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-md transform transition-transform duration-200 ease-in-out md:translate-x-0 md:relative"
+      x-show="sidebarOpen"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="-translate-x-full"
+      x-transition:enter-end="translate-x-0"
+      x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="translate-x-0"
+      x-transition:leave-end="-translate-x-full"
+      class="fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-md transform md:relative"
       @click.away="sidebarOpen = false"
+      x-cloak
     >
       <div class="p-6">
         <h1 class="text-2xl font-bold text-blue-600">Warungku</h1>
@@ -34,19 +38,36 @@
       <nav class="mt-8">
         <!-- Menu Items -->
         <a href="{{ route('dashboard') }}"
-           class="block py-2.5 px-4 rounded transition duration-200
-                  {{ $activeMenu == 'dashboard' ? 'bg-blue-500 text-white' : 'hover:bg-blue-100 hover:text-blue-600' }}">
+           class="block py-2.5 px-4 rounded transition duration-200 {{ $activeMenu == 'dashboard' ? 'bg-blue-500 text-white' : 'hover:bg-blue-100 hover:text-blue-600' }}">
           Dashboard
         </a>
-        <a href="{{ url('/transaksi') }}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Transaksi</a>
-        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Produk</a>
-        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Laporan</a>
-        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Pengaturan</a>
-        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Utang & Piutang</a>
-        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">Kalkulator Harga</a>
+        <a href="{{ url('/transaksi') }}"
+           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
+          Transaksi
+        </a>
+        <a href="#"
+           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
+          Produk
+        </a>
+        <a href="#"
+           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
+          Laporan
+        </a>
+        <a href="#"
+           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
+          Pengaturan
+        </a>
+        <a href="#"
+           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
+          Utang & Piutang
+        </a>
+        <a href="#"
+           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
+          Kalkulator Harga
+        </a>
       </nav>
       
-      <!-- Close Button (Mobile Only) -->
+      <!-- Tombol Close (Mobile Only) -->
       <button 
         @click="sidebarOpen = false" 
         class="absolute top-4 right-4 md:hidden"
@@ -57,11 +78,22 @@
       </button>
     </aside>
 
+    <!-- Overlay untuk mobile (hanya tampil di mobile) -->
+    <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 bg-black opacity-50 z-20 md:hidden" @click="sidebarOpen = false"></div>
+
     <!-- Konten Utama -->
     <div class="flex-1 flex flex-col">
       <!-- Header -->
       <header class="bg-white shadow-md p-4 flex justify-between items-center">
-        <h2 class="text-xl font-semibold">Dashboard</h2>
+        <div class="flex items-center">
+          <!-- Tombol Hamburger untuk Mobile (di dalam header) -->
+          <button @click="sidebarOpen = true" class="md:hidden mr-4 p-2 bg-white rounded shadow">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+          <h2 class="text-xl font-semibold">Dashboard</h2>
+        </div>
         <div class="flex items-center">
           <span class="mr-4">Hai, Admin</span>
           <img class="w-10 h-10 rounded-full" src="https://via.placeholder.com/150" alt="Profile Picture">
