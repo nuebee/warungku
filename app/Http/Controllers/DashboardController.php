@@ -15,4 +15,16 @@ class DashboardController extends Controller
     {
         return view('transaksi');
     }
+
+
+    public function product()
+    {
+        return view('product');
+    }
+
+
+    public function laporan()
+    {
+        return view('laporan');
+    }
 }

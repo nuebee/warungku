@@ -9,3 +9,14 @@ Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 Route::get('/transaksi', function () {
     return view('transaksi');
 })->name('transaksi');
+
+
+
+Route::get('/product', function () {
+    return view('product');
+})->name('product');
+
+
+Route::get('/laporan', function () {
+    return view('laporan');
+})->name('laporan');

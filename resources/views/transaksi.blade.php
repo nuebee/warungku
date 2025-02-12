@@ -29,7 +29,8 @@
           </svg>
         </button>
       </div>
-      <nav class="mt-4">
+      <nav class="mt-8">
+        <!-- Menu Items -->
         <a href="{{ route('dashboard') }}"
            class="block py-2.5 px-4 rounded transition duration-200 {{ $activeMenu == 'dashboard' ? 'bg-blue-500 text-white' : 'hover:bg-blue-100 hover:text-blue-600' }}">
           Dashboard
@@ -38,17 +39,13 @@
            class="block py-2.5 px-4 rounded transition duration-200 {{ $activeMenu == 'transaksi' ? 'bg-blue-500 text-white' : 'hover:bg-blue-100 hover:text-blue-600' }}">
           Transaksi
         </a>
-        <a href="#"
-           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
-          Produk
+        <a href="{{ route('product') }}"
+           class="block py-2.5 px-4 rounded transition duration-200 {{ $activeMenu == 'product' ? 'bg-blue-500 text-white' : 'hover:bg-blue-100 hover:text-blue-600' }}">
+          Product
         </a>
         <a href="#"
            class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
-          Laporan
-        </a>
-        <a href="#"
-           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
-          Pengaturan
+          laporan
         </a>
         <a href="#"
            class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
@@ -78,18 +75,15 @@
            class="block py-2.5 px-4 rounded transition duration-200 {{ $activeMenu == 'transaksi' ? 'bg-blue-500 text-white' : 'hover:bg-blue-100 hover:text-blue-600' }}">
           Transaksi
         </a>
-        <a href="#"
-           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
-          Produk
+        <a href="{{ url('/product') }}"
+           class="block py-2.5 px-4 rounded transition duration-200 {{ $activeMenu == 'product' ? 'bg-blue-500 text-white' : 'hover:bg-blue-100 hover:text-blue-600' }}">
+          product
         </a>
         <a href="#"
            class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
           Laporan
         </a>
-        <a href="#"
-           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
-          Pengaturan
-        </a>
+     
         <a href="#"
            class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-100 hover:text-blue-600">
           Utang & Piutang
@@ -123,6 +117,38 @@
       </header>
       <!-- Konten -->
       <main class="p-6 overflow-auto">
+        <!-- Tambahan Kartu Informasi -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+          <!-- Card Total Penjualan -->
+          <div class="bg-white shadow rounded-lg p-4">
+            <div class="flex items-center">
+              <div class="bg-blue-100 p-3 rounded-full">
+                <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 7H7v6h6V7z" />
+                </svg>
+              </div>
+              <div class="ml-4">
+                <p class="text-gray-600">Total Penjualan</p>
+                <p class="text-2xl font-bold">Rp 1.200.000</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card Transaksi Hari Ini -->
+          <div class="bg-white shadow rounded-lg p-4">
+            <div class="flex items-center">
+              <div class="bg-green-100 p-3 rounded-full">
+                <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M3 3h14v2H3V3zm0 4h14v2H3V7zm0 4h14v2H3v-2zm0 4h14v2H3v-2z" />
+                </svg>
+              </div>
+              <div class="ml-4">
+                <p class="text-gray-600">Transaksi Hari Ini</p>
+                <p class="text-2xl font-bold">15</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Judul Halaman -->
         <h1 class="text-3xl font-bold mb-4">Halaman Transaksi</h1>
         <!-- Tombol Pemasukan & Pengeluaran -->
         <div class="mb-6">
@@ -170,7 +196,7 @@
                     <span class="text-gray-500">-</span>
                   </td>
                 </tr>
-                <!-- Baris transaksi lainnya -->
+                <!-- Tambahkan baris transaksi lainnya sesuai kebutuhan -->
               </tbody>
             </table>
           </div>
@@ -182,38 +208,30 @@
   <!-- Script untuk Toggle Mobile Menu dengan Animasi -->
   <script>
     function toggleMobileMenu() {
-  var mobileMenu    = document.getElementById('mobile-menu');
-  var mobileOverlay = document.getElementById('mobile-overlay');
-  var mobileSidebar = document.getElementById('mobile-sidebar');
+      var mobileMenu    = document.getElementById('mobile-menu');
+      var mobileOverlay = document.getElementById('mobile-overlay');
+      var mobileSidebar = document.getElementById('mobile-sidebar');
 
-  // Jika sidebar masih tersembunyi (default: -translate-x-full)
-  if (mobileSidebar.classList.contains('-translate-x-full')) {
-    // Tampilkan container mobile menu
-    mobileMenu.classList.remove('hidden');
-    
-    // Gunakan double requestAnimationFrame untuk memaksa browser merender terlebih dahulu
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() {
-        mobileSidebar.classList.remove('-translate-x-full');
-        mobileSidebar.classList.add('translate-x-0');
-        mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
-        mobileOverlay.classList.add('opacity-50');
-      });
-    });
-    
-  } else {
-    // Proses menutup menu
-    mobileSidebar.classList.remove('translate-x-0');
-    mobileSidebar.classList.add('-translate-x-full');
-    mobileOverlay.classList.remove('opacity-50');
-    mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
-    // Setelah transisi selesai (300ms), sembunyikan container
-    setTimeout(function() {
-      mobileMenu.classList.add('hidden');
-    }, 300);
-  }
-}
-
+      if (mobileSidebar.classList.contains('-translate-x-full')) {
+        mobileMenu.classList.remove('hidden');
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            mobileSidebar.classList.remove('-translate-x-full');
+            mobileSidebar.classList.add('translate-x-0');
+            mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            mobileOverlay.classList.add('opacity-50');
+          });
+        });
+      } else {
+        mobileSidebar.classList.remove('translate-x-0');
+        mobileSidebar.classList.add('-translate-x-full');
+        mobileOverlay.classList.remove('opacity-50');
+        mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(function() {
+          mobileMenu.classList.add('hidden');
+        }, 300);
+      }
+    }
   </script>
 </body>
 </html>
